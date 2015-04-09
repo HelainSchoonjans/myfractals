@@ -21,10 +21,10 @@
         var s = zoom.value;
         var iter = iterations.value;
         console.log(ox, oy, s, iter);
-        Fractal.prototype.center_r = parseInt(ox);
-        Fractal.prototype.center_i = parseInt(oy);
-        Fractal.prototype.resolution = parseInt(s);
-        Fractal.prototype.maxIterations = parseInt(iter);
+        Fractal.prototype.center_r = Number(ox);
+        Fractal.prototype.center_i = Number(oy);
+        Fractal.prototype.resolution = Number(s);
+        Fractal.prototype.maxIterations = Number(iter);
 
         fractal.drawMandelbrot();
     }

@@ -48,6 +48,7 @@
     Fractal.prototype.drawMandelbrot = function() {
       var column, j, k, ref, ref1, row;
       console.log("Begin generation with", this.maxIterations, "iteration(s)");
+      console.log("Centered at", this.center_r, this.center_i);
       for (row = j = 0, ref = this.numberOfRows; 0 <= ref ? j < ref : j > ref; row = 0 <= ref ? ++j : --j) {
         for (column = k = 0, ref1 = this.numberOfColumns; 0 <= ref1 ? k < ref1 : k > ref1; column = 0 <= ref1 ? ++k : --k) {
           this.drawCurrentPixel(row, column);

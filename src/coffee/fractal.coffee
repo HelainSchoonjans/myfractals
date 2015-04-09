@@ -37,6 +37,7 @@ class Fractal
 
   drawMandelbrot: ->
     console.log "Begin generation with", @maxIterations, "iteration(s)"
+    console.log "Centered at", @center_r, @center_i
     for row in [0...@numberOfRows]
         for column in [0...@numberOfColumns]
           @drawCurrentPixel(row, column)
