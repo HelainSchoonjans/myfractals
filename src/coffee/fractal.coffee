@@ -3,32 +3,32 @@
 class Complex
   constructor: (@r=0, @i=0) ->
     @magnitude = @r*@r + @i*@i
- 
+
   plus: (c2) ->
     new Complex(
       @r + c2.r,
       @i + c2.i
     )
- 
+
   times: (c2) ->
     new Complex(
       @r*c2.r - @i*c2.i,
       @r*c2.i + @i*c2.r
     )
- 
+
   negation: ->
     new Complex(
       -1 * @r,
       -1 * @i
     )
- 
+
   inverse: ->
     throw Error "no inverse" if @magnitude is 0
     new Complex(
       @r / @magnitude,
       -1 * @i / @magnitude
     )
- 
+
   toString: ->
     return "#{@r}" if @i == 0
     return "#{@i}i" if @r == 0
@@ -70,9 +70,11 @@ class Fractal
     @drawingContext = @canvas.getContext '2d'
 
   drawMandelbrot: ->
+    console.log "Begin generation with", @maxIterations, "iteration(s)"
     for row in [0...@numberOfRows]
         for column in [0...@numberOfColumns]
           @drawCurrentPixel(row, column)
+    console.log "Finished"
 
   drawCurrentPixel: (row, column) ->
     iteration = 0

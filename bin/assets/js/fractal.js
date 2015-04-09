@@ -57,7 +57,7 @@
 
     Fractal.prototype.epsilon = 0.0001;
 
-    Fractal.prototype.maxIterations = 25;
+    Fractal.prototype.maxIterations = 10;
 
     Fractal.prototype.cellSize = 1;
 
@@ -83,19 +83,14 @@
     };
 
     Fractal.prototype.drawMandelbrot = function() {
-      var column, i, ref, results, row;
-      results = [];
+      var column, i, j, ref, ref1, row;
+      console.log("Numbers of iterations:", this.maxIterations);
       for (row = i = 0, ref = this.numberOfRows; 0 <= ref ? i < ref : i > ref; row = 0 <= ref ? ++i : --i) {
-        results.push((function() {
-          var j, ref1, results1;
-          results1 = [];
-          for (column = j = 0, ref1 = this.numberOfColumns; 0 <= ref1 ? j < ref1 : j > ref1; column = 0 <= ref1 ? ++j : --j) {
-            results1.push(this.drawCurrentPixel(row, column));
-          }
-          return results1;
-        }).call(this));
+        for (column = j = 0, ref1 = this.numberOfColumns; 0 <= ref1 ? j < ref1 : j > ref1; column = 0 <= ref1 ? ++j : --j) {
+          this.drawCurrentPixel(row, column);
+        }
       }
-      return results;
+      return console.log("Finished");
     };
 
     Fractal.prototype.drawCurrentPixel = function(row, column) {
