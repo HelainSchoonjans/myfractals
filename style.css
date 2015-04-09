@@ -1,0 +1,18 @@
+body {
+  background-color: rgb(38, 38, 38);
+  text-align: center;
+}
+
+canvas {
+  border: 1px solid white;
+  margin: 50px auto 0 auto;
+  display: block;
+}
+
+#controls {
+    border: 1px solid white;
+    background-color: hsl(0, 60%, 50%);
+    width: 40%;
+    margin: 0px auto 0 auto;
+    padding: 5px;
+}

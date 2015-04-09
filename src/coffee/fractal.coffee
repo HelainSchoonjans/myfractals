@@ -1,41 +1,4 @@
-# from http://rosettacode.org/wiki/Arithmetic/Complex#CoffeeScript
-# create an immutable Complex type
-class Complex
-  constructor: (@r=0, @i=0) ->
-    @magnitude = @r*@r + @i*@i
-
-  plus: (c2) ->
-    new Complex(
-      @r + c2.r,
-      @i + c2.i
-    )
-
-  times: (c2) ->
-    new Complex(
-      @r*c2.r - @i*c2.i,
-      @r*c2.i + @i*c2.r
-    )
-
-  negation: ->
-    new Complex(
-      -1 * @r,
-      -1 * @i
-    )
-
-  inverse: ->
-    throw Error "no inverse" if @magnitude is 0
-    new Complex(
-      @r / @magnitude,
-      -1 * @i / @magnitude
-    )
-
-  toString: ->
-    return "#{@r}" if @i == 0
-    return "#{@i}i" if @r == 0
-    if @i > 0
-      "#{@r} + #{@i}i"
-    else
-      "#{@r} - #{-1 * @i}i"
+"use strict"
 
 #milestones
 # add easy zoom
@@ -52,6 +15,8 @@ class Fractal
   maxIterations: 25
   cellSize: 1  # size of a pixel
   resolution: 150  # number of pixel per unit
+  center_r: 0
+  center_i: 0
 
   constructor: ->
     @createCanvas()
@@ -79,8 +44,8 @@ class Fractal
 
   drawCurrentPixel: (row, column) ->
     iteration = 0
-    r = (column - @numberOfColumns / 2) / @resolution
-    i = (row - @numberOfRows / 2) / @resolution
+    r = (column - (@numberOfColumns / 2)) / @resolution + @center_r
+    i = (row - (@numberOfRows / 2)) / @resolution + @center_i
     c = new Complex(r, i)
     z = new Complex(0,0)
 

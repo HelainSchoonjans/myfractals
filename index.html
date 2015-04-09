@@ -1,29 +1,42 @@
-<html>
+<!doctype html>
 <head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css">
   <title>Fractal</title>
-
-  <script type="text/javascript" src="bin/assets/js/fractal.js">
-  </script>
-
-  <style type="text/css">
-    body {
-      background-color: rgb(38, 38, 38);
-      text-align: center;
-    }
-
-    canvas {
-      border: 1px solid white;
-      margin: 50px auto 0 auto;
-      display: block;
-    }
-  </style>
+  <script type="text/javascript" src="bin/assets/js/complex.js"></script>
+  <script type="text/javascript" src="bin/assets/js/fractal.js"></script>
 </head>
+
 <body>
   <script type="text/javascript">
     var fractal = new Fractal();
   </script>
+
   <br/>
-  <button id="more_res_button" onclick="fractal.applyDeltaIterations(5)">Increase resolution</button>
-  <button id="less_res_button" onclick="fractal.applyDeltaIterations(-5)">Decrease resolution</button>
+
+  <script type="text/javascript">
+    function applyControls() {
+        var ox = origin_x.value;
+        var oy = origin_y.value;
+        var s = zoom.value;
+        var iter = iterations.value;
+        console.log(ox, oy, s, iter);
+        Fractal.prototype.center_r = parseInt(ox);
+        Fractal.prototype.center_i = parseInt(oy);
+        Fractal.prototype.resolution = parseInt(s);
+        Fractal.prototype.maxIterations = parseInt(iter);
+
+        fractal.drawMandelbrot();
+    }
+  </script>
+  <form id="controls">
+    <!-- TODO: enforce Level.MAX_AUTHORNAME_LENGTH -->
+    Center: <input type="number" id="origin_x" value="0" /> <input type="number" id="origin_y" value="0"/><br/>
+    Zoom: <input type="number" id="zoom" value="150" /><br/>
+    Iterations: <input type="number" id="iterations" value="25" /><br/>
+    <button type="button" onclick="applyControls()">Go!</button>
+  </form>
+
+
 </body>
 </html>
