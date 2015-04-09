@@ -51,20 +51,20 @@ class Fractal
   epsilon: 0.0001
   maxIterations: 25
   cellSize: 1  # size of a pixel
-  resolution: 150  # number of pixel per unit
-  type: 'circle'#cirlce or mandelbrot
+  resolution: 150    # number of pixel per unit
+  type: 'mandelbrot'    #circle or mandelbrot
 
   constructor: ->
     @createCanvas()
     @resizeCanvas()
     @createDrawingContext()
     @drawFractal()
-	
+  
   drawFractal: ->
     switch @type
       when 'circle' then @drawCircleFractal()
       when 'mandelbrot' then @drawMandelbrot()
-
+  
   createCanvas: ->
     @canvas = document.createElement 'canvas'
     document.body.appendChild @canvas
@@ -89,6 +89,7 @@ class Fractal
 	
   # inspired from http://natureofcode.com/book/chapter-8-fractals/
   drawCircleFractal: ->
+    @drawingContext.clearRect(0,0, @canvas.width, @canvas.height)
     @drawCircle(@numberOfColumns/2,@numberOfRows/2, 200)
 
   drawMandelbrot: ->
@@ -118,6 +119,11 @@ class Fractal
 
   applyDeltaIterations: (delta) ->
     @maxIterations += delta
-    @drawMandelbrot()
+    @drawFractal()
+  
+  changeType: ->
+    @type = document.getElementById("type").value
+    console.log "type", @type
+    @drawFractal()
 
 window.Fractal = Fractal

@@ -63,7 +63,7 @@
 
     Fractal.prototype.resolution = 150;
 
-    Fractal.prototype.type = 'circle';
+    Fractal.prototype.type = 'mandelbrot';
 
     function Fractal() {
       this.createCanvas();
@@ -108,6 +108,7 @@
     };
 
     Fractal.prototype.drawCircleFractal = function() {
+      this.drawingContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
       return this.drawCircle(this.numberOfColumns / 2, this.numberOfRows / 2, 200);
     };
 
@@ -142,7 +143,13 @@
 
     Fractal.prototype.applyDeltaIterations = function(delta) {
       this.maxIterations += delta;
-      return this.drawMandelbrot();
+      return this.drawFractal();
+    };
+
+    Fractal.prototype.changeType = function() {
+      this.type = document.getElementById("type").value;
+      console.log("type", this.type);
+      return this.drawFractal();
     };
 
     return Fractal;

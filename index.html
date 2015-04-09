@@ -24,5 +24,15 @@
   <br>
   <button id="more_res_button" onclick="fractal.applyDeltaIterations(5)">Increase resolution</button>
   <button id="less_res_button" onclick="fractal.applyDeltaIterations(-5)">Decrease resolution</button>
-</body>
+  <br>
+  <form name="fractalType" class="icon-menu" onchange="fractal.changeType()">
+    <div align="center">
+    <select name="newType" id="type">
+      <option value="mandelbrot">Mandelbrot fractal</option>
+      <option value="circle">Circle fractal</option>
+    </select>
+    </div>
+  </form>
+  
+  </body>
 </html>
