@@ -1,26 +1,35 @@
-<html>
+<!doctype html>
 <head>
+  <meta charset="UTF-8">
   <link rel="stylesheet" href="style.css">
   <title>Fractal</title>
-  <script type="text/javascript" src="bin/assets/js/fractal.js">
-  </script>
-
-  <style type="text/css">
-    body {
-      background-color: rgb(38, 38, 38);
-    }
-
-    canvas {
-      border: 1px solid white;
-      margin: 50px auto 0 auto;
-      display: block;
-    }
-  </style>
+  <script type="text/javascript" src="bin/assets/js/complex.js"></script>
+  <script type="text/javascript" src="bin/assets/js/fractal.js"></script>
 </head>
+
 <body>
   <script type="text/javascript">
     var fractal = new Fractal();
   </script>
+
+  <br/>
+
+  <script type="text/javascript">
+    function applyControls() {
+        var ox = origin_x.value;
+        var oy = origin_y.value;
+        var s = zoom.value;
+        var iter = iterations.value;
+        console.log(ox, oy, s, iter);
+        Fractal.prototype.center_r = Number(ox);
+        Fractal.prototype.center_i = Number(oy);
+        Fractal.prototype.resolution = Number(s);
+        Fractal.prototype.maxIterations = Number(iter);
+
+        fractal.drawFractal();
+    }
+  </script>
+  
   <br>
   <button id="more_res_button" onclick="fractal.applyDeltaIterations(5)">Increase resolution</button>
   <button id="less_res_button" onclick="fractal.applyDeltaIterations(-5)">Decrease resolution</button>
@@ -33,6 +42,20 @@
     </select>
     </div>
   </form>
-  
-  </body>
+ 
+  <form id="controls">
+    <!-- TODO: enforce Level.MAX_AUTHORNAME_LENGTH -->
+    Center: <input type="number" id="origin_x" value="0" /> <input type="number" id="origin_y" value="0"/><br/>
+    Zoom: <input type="number" id="zoom" value="150" /><br/>
+    Iterations: <input type="number" id="iterations" value="25" /><br/>
+    <button type="button" onclick="applyControls()">Go!</button>
+  </form>
+
+
+  <div id="footer">
+  <p>Initial code by Helain Schoonjans (<a href="https://github.com/HelainSchoonjans/myMandelbrot-Fractal">repo</a>)</p>
+  <p>Modified by Thomas Chapeaux (<a href="https://github.com/tchapeaux/myMandelbrot-Fractal">repo</a>)</p>
+  </div>
+
+</body>
 </html>
