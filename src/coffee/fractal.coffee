@@ -44,13 +44,14 @@ class Complex
 # clean code
 
 class Fractal
-  numberOfRows: 1000
-  numberOfColumns: 1000
+  numberOfRows: 400
+  numberOfColumns: 600
   canvas: null
   drawingContext: null
   epsilon: 0.0001
   maxIterations: 25
-  cellSize: 1
+  cellSize: 1  # size of a pixel
+  resolution: 150  # number of pixel per unit
 
   constructor: ->
     @createCanvas()
@@ -78,7 +79,9 @@ class Fractal
 
   drawCurrentPixel: (row, column) ->
     iteration = 0
-    c = new Complex(row*2 / 300 - 3, column*2 / 300 - 3)
+    r = (column - @numberOfColumns / 2) / @resolution
+    i = (row - @numberOfRows / 2) / @resolution
+    c = new Complex(r, i)
     z = new Complex(0,0)
 
     while iteration < @maxIterations && z.magnitude < 2
@@ -88,8 +91,12 @@ class Fractal
     b = iteration * 360 / @maxIterations
 
     @drawingContext.fillStyle = "hsl(#{b}, 60%, 50%)"
-    @drawingContext.fillRect row*@cellSize, column*@cellSize, @cellSize, @cellSize
+    x = column*@cellSize
+    y = @canvas.height - row * @cellSize
+    @drawingContext.fillRect x, y, @cellSize, @cellSize
 
-
+  applyDeltaIterations: (delta) ->
+    @maxIterations += delta
+    @drawMandelbrot()
 
 window.Fractal = Fractal
