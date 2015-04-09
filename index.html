@@ -11,7 +11,7 @@
     }
 
     canvas {
-      border: 1px solid rgba(242, 198, 65, 0.1);
+      border: 1px solid white;
       margin: 50px auto 0 auto;
       display: block;
     }
@@ -19,7 +19,9 @@
 </head>
 <body>
   <script type="text/javascript">
-    new Fractal();
+    var fractal = new Fractal();
   </script>
+  <button id="more_res_button" onclick="fractal.applyDeltaIterations(5)">Increase resolution</button>
+  <button id="less_res_button" onclick="fractal.applyDeltaIterations(-5)">Decrease resolution</button>
 </body>
 </html>

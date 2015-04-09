@@ -3,9 +3,9 @@
   var Complex, Fractal;
 
   Complex = (function() {
-    function Complex(r, i) {
-      this.r = r != null ? r : 0;
-      this.i = i != null ? i : 0;
+    function Complex(r1, i1) {
+      this.r = r1 != null ? r1 : 0;
+      this.i = i1 != null ? i1 : 0;
       this.magnitude = this.r * this.r + this.i * this.i;
     }
 
@@ -47,9 +47,9 @@
   })();
 
   Fractal = (function() {
-    Fractal.prototype.numberOfRows = 1000;
+    Fractal.prototype.numberOfRows = 400;
 
-    Fractal.prototype.numberOfColumns = 1000;
+    Fractal.prototype.numberOfColumns = 600;
 
     Fractal.prototype.canvas = null;
 
@@ -60,6 +60,8 @@
     Fractal.prototype.maxIterations = 25;
 
     Fractal.prototype.cellSize = 1;
+
+    Fractal.prototype.resolution = 150;
 
     function Fractal() {
       this.createCanvas();
@@ -83,25 +85,22 @@
     };
 
     Fractal.prototype.drawMandelbrot = function() {
-      var column, i, ref, results, row;
-      results = [];
-      for (row = i = 0, ref = this.numberOfRows; 0 <= ref ? i < ref : i > ref; row = 0 <= ref ? ++i : --i) {
-        results.push((function() {
-          var j, ref1, results1;
-          results1 = [];
-          for (column = j = 0, ref1 = this.numberOfColumns; 0 <= ref1 ? j < ref1 : j > ref1; column = 0 <= ref1 ? ++j : --j) {
-            results1.push(this.drawCurrentPixel(row, column));
-          }
-          return results1;
-        }).call(this));
+      var column, j, k, ref, ref1, row;
+      console.log("Begin generation with", this.maxIterations, "iteration(s)");
+      for (row = j = 0, ref = this.numberOfRows; 0 <= ref ? j < ref : j > ref; row = 0 <= ref ? ++j : --j) {
+        for (column = k = 0, ref1 = this.numberOfColumns; 0 <= ref1 ? k < ref1 : k > ref1; column = 0 <= ref1 ? ++k : --k) {
+          this.drawCurrentPixel(row, column);
+        }
       }
-      return results;
+      return console.log("Finished");
     };
 
     Fractal.prototype.drawCurrentPixel = function(row, column) {
-      var b, c, iteration, z;
+      var b, c, i, iteration, r, x, y, z;
       iteration = 0;
-      c = new Complex(row * 2 / 300 - 3, column * 2 / 300 - 3);
+      r = (column - this.numberOfColumns / 2) / this.resolution;
+      i = (row - this.numberOfRows / 2) / this.resolution;
+      c = new Complex(r, i);
       z = new Complex(0, 0);
       while (iteration < this.maxIterations && z.magnitude < 2) {
         z = z.times(z).plus(c);
@@ -109,7 +108,14 @@
       }
       b = iteration * 360 / this.maxIterations;
       this.drawingContext.fillStyle = "hsl(" + b + ", 60%, 50%)";
-      return this.drawingContext.fillRect(row * this.cellSize, column * this.cellSize, this.cellSize, this.cellSize);
+      x = column * this.cellSize;
+      y = this.canvas.height - row * this.cellSize;
+      return this.drawingContext.fillRect(x, y, this.cellSize, this.cellSize);
+    };
+
+    Fractal.prototype.applyDeltaIterations = function(delta) {
+      this.maxIterations += delta;
+      return this.drawMandelbrot();
     };
 
     return Fractal;
