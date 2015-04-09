@@ -11,8 +11,12 @@ canvas {
 
 #controls {
     border: 1px solid white;
-    background-color: hsl(0, 60%, 50%);
+    background-color: rgb(255, 125, 64);
     width: 40%;
     margin: 0px auto 0 auto;
     padding: 5px;
+}
+
+#footer {
+    color: white;
 }
