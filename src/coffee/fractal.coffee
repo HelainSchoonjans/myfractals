@@ -52,12 +52,18 @@ class Fractal
   maxIterations: 25
   cellSize: 1  # size of a pixel
   resolution: 150  # number of pixel per unit
+  type: 'circle'#cirlce or mandelbrot
 
   constructor: ->
     @createCanvas()
     @resizeCanvas()
     @createDrawingContext()
-    @drawMandelbrot()
+    @drawFractal()
+	
+  drawFractal: ->
+    switch @type
+      when 'circle' then @drawCircleFractal()
+      when 'mandelbrot' then @drawMandelbrot()
 
   createCanvas: ->
     @canvas = document.createElement 'canvas'
@@ -69,6 +75,21 @@ class Fractal
 
   createDrawingContext: ->
     @drawingContext = @canvas.getContext '2d'
+
+  # inspired from http://natureofcode.com/book/chapter-8-fractals/
+  drawCircle: (x, y, radius) ->
+    @drawingContext.strokeStyle = "hsl(#{radius}, 60%, 50%)"
+    @drawingContext.beginPath()
+    @drawingContext.arc(x,y,radius,0,2*Math.PI)
+    @drawingContext.stroke()
+    if radius > 2
+      @drawCircle()
+      @drawCircle(x + radius/2, y, radius/2)
+      @drawCircle(x - radius/2, y, radius/2)
+	
+  # inspired from http://natureofcode.com/book/chapter-8-fractals/
+  drawCircleFractal: ->
+    @drawCircle(@numberOfColumns/2,@numberOfRows/2, 200)
 
   drawMandelbrot: ->
     console.log "Begin generation with", @maxIterations, "iteration(s)"

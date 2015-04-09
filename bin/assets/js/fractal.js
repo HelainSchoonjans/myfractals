@@ -63,12 +63,23 @@
 
     Fractal.prototype.resolution = 150;
 
+    Fractal.prototype.type = 'circle';
+
     function Fractal() {
       this.createCanvas();
       this.resizeCanvas();
       this.createDrawingContext();
-      this.drawMandelbrot();
+      this.drawFractal();
     }
+
+    Fractal.prototype.drawFractal = function() {
+      switch (this.type) {
+        case 'circle':
+          return this.drawCircleFractal();
+        case 'mandelbrot':
+          return this.drawMandelbrot();
+      }
+    };
 
     Fractal.prototype.createCanvas = function() {
       this.canvas = document.createElement('canvas');
@@ -82,6 +93,22 @@
 
     Fractal.prototype.createDrawingContext = function() {
       return this.drawingContext = this.canvas.getContext('2d');
+    };
+
+    Fractal.prototype.drawCircle = function(x, y, radius) {
+      this.drawingContext.strokeStyle = "hsl(" + radius + ", 60%, 50%)";
+      this.drawingContext.beginPath();
+      this.drawingContext.arc(x, y, radius, 0, 2 * Math.PI);
+      this.drawingContext.stroke();
+      if (radius > 2) {
+        this.drawCircle();
+        this.drawCircle(x + radius / 2, y, radius / 2);
+        return this.drawCircle(x - radius / 2, y, radius / 2);
+      }
+    };
+
+    Fractal.prototype.drawCircleFractal = function() {
+      return this.drawCircle(this.numberOfColumns / 2, this.numberOfRows / 2, 200);
     };
 
     Fractal.prototype.drawMandelbrot = function() {
