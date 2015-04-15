@@ -21,7 +21,9 @@
     Fractal.prototype.resolution = 150;
 
     Fractal.prototype.type = 'mandelbrot';
+
     Fractal.prototype.center_r = 0;
+
     Fractal.prototype.center_i = 0;
 
     function Fractal() {
@@ -32,12 +34,16 @@
     }
 
     Fractal.prototype.drawFractal = function() {
+      console.log("Begin generation with", this.maxIterations, "iteration(s)");
+      console.log("Centered at", this.center_r, this.center_i);
       switch (this.type) {
         case 'circle':
-          return this.drawCircleFractal();
+          this.drawCircleFractal();
+          break;
         case 'mandelbrot':
-          return this.drawMandelbrot();
+          this.drawMandelbrot();
       }
+      return console.log("Finished");
     };
 
     Fractal.prototype.createCanvas = function() {
@@ -54,33 +60,43 @@
       return this.drawingContext = this.canvas.getContext('2d');
     };
 
-    Fractal.prototype.drawCircle = function(x, y, radius) {
+    Fractal.prototype.drawCircle = function(x, y, radius, iteration) {
       this.drawingContext.strokeStyle = "hsl(" + radius + ", 60%, 50%)";
       this.drawingContext.beginPath();
       this.drawingContext.arc(x, y, radius, 0, 2 * Math.PI);
       this.drawingContext.stroke();
-      if (radius > 2) {
+      if (iteration < this.maxIterations && radius > 1) {
         this.drawCircle();
-        this.drawCircle(x + radius / 2, y, radius / 2);
-        return this.drawCircle(x - radius / 2, y, radius / 2);
+        this.drawCircle(x + radius / 2, y, radius / 2, iteration + 1);
+        return this.drawCircle(x - radius / 2, y, radius / 2, iteration + 1);
       }
     };
 
     Fractal.prototype.drawCircleFractal = function() {
-      this.drawingContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      return this.drawCircle(this.numberOfColumns / 2, this.numberOfRows / 2, 200);
-    };
-
-    Fractal.prototype.drawMandelbrot = function() {
       var column, j, k, ref, ref1, row;
-      console.log("Begin generation with", this.maxIterations, "iteration(s)");
-      console.log("Centered at", this.center_r, this.center_i);
       for (row = j = 0, ref = this.numberOfRows; 0 <= ref ? j < ref : j > ref; row = 0 <= ref ? ++j : --j) {
         for (column = k = 0, ref1 = this.numberOfColumns; 0 <= ref1 ? k < ref1 : k > ref1; column = 0 <= ref1 ? ++k : --k) {
           this.drawCurrentPixel(row, column);
         }
       }
-      return console.log("Finished");
+      this.drawingContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      return this.drawCircle(this.numberOfColumns / 2 + this.center_r, this.numberOfRows / 2 + this.center_i, this.resolution, 0);
+    };
+
+    Fractal.prototype.drawMandelbrot = function() {
+      var column, j, ref, results, row;
+      results = [];
+      for (row = j = 0, ref = this.numberOfRows; 0 <= ref ? j < ref : j > ref; row = 0 <= ref ? ++j : --j) {
+        results.push((function() {
+          var k, ref1, results1;
+          results1 = [];
+          for (column = k = 0, ref1 = this.numberOfColumns; 0 <= ref1 ? k < ref1 : k > ref1; column = 0 <= ref1 ? ++k : --k) {
+            results1.push(this.drawCurrentPixel(row, column));
+          }
+          return results1;
+        }).call(this));
+      }
+      return results;
     };
 
     Fractal.prototype.drawCurrentPixel = function(row, column) {
@@ -99,11 +115,6 @@
       x = column * this.cellSize;
       y = this.canvas.height - row * this.cellSize;
       return this.drawingContext.fillRect(x, y, this.cellSize, this.cellSize);
-    };
-
-    Fractal.prototype.applyDeltaIterations = function(delta) {
-      this.maxIterations += delta;
-      return this.drawFractal();
     };
 
     Fractal.prototype.changeType = function() {

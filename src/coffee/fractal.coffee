@@ -1,5 +1,4 @@
 "use strict"
-
 class Fractal
   numberOfRows: 400
   numberOfColumns: 600
@@ -20,10 +19,13 @@ class Fractal
     @drawFractal()
   
   drawFractal: ->
+    console.log "Begin generation with", @maxIterations, "iteration(s)"
+    console.log "Centered at", @center_r, @center_i
     switch @type
       when 'circle' then @drawCircleFractal()
       when 'mandelbrot' then @drawMandelbrot()
-  
+    console.log "Finished"
+
   createCanvas: ->
     @canvas = document.createElement 'canvas'
     document.body.appendChild @canvas
@@ -36,28 +38,29 @@ class Fractal
     @drawingContext = @canvas.getContext '2d'
 
   # inspired from http://natureofcode.com/book/chapter-8-fractals/
-  drawCircle: (x, y, radius) ->
+  drawCircle: (x, y, radius, iteration) ->
     @drawingContext.strokeStyle = "hsl(#{radius}, 60%, 50%)"
     @drawingContext.beginPath()
     @drawingContext.arc(x,y,radius,0,2*Math.PI)
     @drawingContext.stroke()
-    if radius > 2
+    if iteration < @maxIterations and radius > 1
       @drawCircle()
-      @drawCircle(x + radius/2, y, radius/2)
-      @drawCircle(x - radius/2, y, radius/2)
+      @drawCircle(x + radius/2, y, radius/2, iteration+1)
+      @drawCircle(x - radius/2, y, radius/2, iteration+1)
 	
   # inspired from http://natureofcode.com/book/chapter-8-fractals/
   drawCircleFractal: ->
-    @drawingContext.clearRect(0,0, @canvas.width, @canvas.height)
-    @drawCircle(@numberOfColumns/2,@numberOfRows/2, 200)
-
-  drawMandelbrot: ->
-    console.log "Begin generation with", @maxIterations, "iteration(s)"
-    console.log "Centered at", @center_r, @center_i
     for row in [0...@numberOfRows]
         for column in [0...@numberOfColumns]
           @drawCurrentPixel(row, column)
-    console.log "Finished"
+    
+    @drawingContext.clearRect(0,0, @canvas.width, @canvas.height)
+    @drawCircle(@numberOfColumns/2 + @center_r,@numberOfRows/2 + @center_i, @resolution, 0)
+
+  drawMandelbrot: ->
+    for row in [0...@numberOfRows]
+        for column in [0...@numberOfColumns]
+          @drawCurrentPixel(row, column)
 
   drawCurrentPixel: (row, column) ->
     iteration = 0
@@ -76,10 +79,6 @@ class Fractal
     x = column*@cellSize
     y = @canvas.height - row * @cellSize
     @drawingContext.fillRect x, y, @cellSize, @cellSize
-
-  applyDeltaIterations: (delta) ->
-    @maxIterations += delta
-    @drawFractal()
   
   changeType: ->
     @type = document.getElementById("type").value

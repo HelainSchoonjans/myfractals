@@ -30,10 +30,6 @@
     }
   </script>
   
-  <br>
-  <button id="more_res_button" onclick="fractal.applyDeltaIterations(5)">Increase resolution</button>
-  <button id="less_res_button" onclick="fractal.applyDeltaIterations(-5)">Decrease resolution</button>
-  <br>
   <form name="fractalType" class="icon-menu" onchange="fractal.changeType()">
     <div align="center">
     <select name="newType" id="type">
@@ -42,6 +38,8 @@
     </select>
     </div>
   </form>
+  
+  <br>
  
   <form id="controls">
     <!-- TODO: enforce Level.MAX_AUTHORNAME_LENGTH -->
