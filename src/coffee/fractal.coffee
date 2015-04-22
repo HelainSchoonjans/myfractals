@@ -8,7 +8,7 @@ class Fractal
   maxIterations: 25
   cellSize: 1  # size of a pixel
   resolution: 150    # number of pixel per unit
-  type: 'mandelbrot'    #circle or mandelbrot
+  type: 'mandelbrot'    #cantor, circle or mandelbrot
   center_r: 0
   center_i: 0
 
@@ -24,6 +24,7 @@ class Fractal
     switch @type
       when 'circle' then @drawCircleFractal()
       when 'mandelbrot' then @drawMandelbrot()
+      when 'cantor' then @drawCantor()
     console.log "Finished"
 
   createCanvas: ->
@@ -57,6 +58,18 @@ class Fractal
     @drawingContext.clearRect(0,0, @canvas.width, @canvas.height)
     @drawCircle(@numberOfColumns/2 + @center_r,@numberOfRows/2 + @center_i, @resolution, 0)
 
+  cantor: ( x = 20, y = @canvas.height/3, len = @canvas.width-40) ->
+    if (len >= 1)
+      @drawingContext.fillStyle = "hsl(0, 60%, 50%)"
+      @drawingContext.fillRect x, y, len, 10
+      y += (20 + @cellSize)
+      @cantor(x,y,len/3)
+      @cantor(x+len*2/3,y,len/3)
+    
+  drawCantor: ->
+    @drawingContext.clearRect(0,0, @canvas.width, @canvas.height)
+    @cantor()
+    
   drawMandelbrot: ->
     for row in [0...@numberOfRows]
         for column in [0...@numberOfColumns]
