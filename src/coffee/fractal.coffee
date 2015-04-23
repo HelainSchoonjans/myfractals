@@ -58,11 +58,11 @@ class Fractal
     @drawingContext.clearRect(0,0, @canvas.width, @canvas.height)
     @drawCircle(@numberOfColumns/2 + @center_r,@numberOfRows/2 + @center_i, @resolution, 0)
 
-  cantor: ( x = 20, y = @canvas.height/3, len = @canvas.width-40) ->
+  cantor: ( x = 20+@center_r, y = @canvas.height/3 + @center_i, len = @canvas.width*@resolution/150-40) ->
     if (len >= 1)
       @drawingContext.fillStyle = "hsl(0, 60%, 50%)"
-      @drawingContext.fillRect x, y, len, 10
-      y += (20 + @cellSize)
+      @drawingContext.fillRect x, y, len, 10*@resolution/150
+      y += (20)*@resolution/150
       @cantor(x,y,len/3)
       @cantor(x+len*2/3,y,len/3)
     
